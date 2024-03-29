@@ -10,8 +10,9 @@ import (
 )
 
 type Client struct {
-	httpClient *http.Client
+	HttpClient *http.Client
 	BaseURL    string
+	APIKey     string
 
 	Settings *SettingsService
 	Server   *ServerService
@@ -22,7 +23,7 @@ type clientOpt func(c *Client) error
 
 func NewClient(opts ...clientOpt) (*Client, error) {
 	c := &Client{
-		httpClient: http.DefaultClient,
+		HttpClient: http.DefaultClient,
 		BaseURL:    "http://localhost:1865",
 	}
 
@@ -41,7 +42,7 @@ func NewClient(opts ...clientOpt) (*Client, error) {
 
 func WithHttpClient(httpClient *http.Client) clientOpt {
 	return func(c *Client) error {
-		c.httpClient = httpClient
+		c.HttpClient = httpClient
 		return nil
 	}
 }
@@ -49,6 +50,13 @@ func WithHttpClient(httpClient *http.Client) clientOpt {
 func WithBaseURL(baseURL string) clientOpt {
 	return func(c *Client) error {
 		c.BaseURL = baseURL
+		return nil
+	}
+}
+
+func WithAPIKey(apiKey string) clientOpt {
+	return func(c *Client) error {
+		c.APIKey = apiKey
 		return nil
 	}
 }
@@ -103,7 +111,11 @@ func do[R any](ctx context.Context, c *Client, method, path string, payload any,
 		return nil, err
 	}
 
-	res, err := c.httpClient.Do(req)
+	if c.APIKey != "" {
+		req.Header.Set("Access_token", c.APIKey)
+	}
+
+	res, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
