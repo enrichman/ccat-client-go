@@ -14,6 +14,7 @@ type Client struct {
 	BaseURL    string
 
 	Settings *SettingsService
+	Server   *ServerService
 	Chat     *ChatService
 }
 
@@ -32,6 +33,7 @@ func NewClient(opts ...clientOpt) (*Client, error) {
 	}
 
 	c.Settings = &SettingsService{c}
+	c.Server = &ServerService{c}
 	c.Chat = &ChatService{c}
 
 	return c, nil

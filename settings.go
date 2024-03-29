@@ -18,7 +18,7 @@ type Setting struct {
 }
 
 type settingsResponse struct {
-	Settings []Setting `json:"settings"`
+	Settings []*Setting `json:"settings"`
 }
 
 type settingResponse struct {
@@ -36,19 +36,19 @@ type createUpdateRequest struct {
 }
 
 type SettingsGetOpts struct {
-	query string
+	Search string
 }
 
-func (s *SettingsService) Get(ctx context.Context, opts SettingsGetOpts) ([]Setting, error) {
+func (s *SettingsService) Get(ctx context.Context, opts SettingsGetOpts) ([]*Setting, error) {
 	endpoint := "/settings"
 
 	values := url.Values{}
-	if opts.query != "" {
-		values.Set("query", opts.query)
+	if opts.Search != "" {
+		values.Set("search", opts.Search)
 	}
 
 	if len(values) > 0 {
-		endpoint += "&" + values.Encode()
+		endpoint += "?" + values.Encode()
 	}
 
 	resp, err := get(ctx, s.client, endpoint, settingsResponse{})
