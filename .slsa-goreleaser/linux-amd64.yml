@@ -17,5 +17,5 @@ main: ./cmd/catctl/main.go
 # {{ .Arch }} will be replaced by goarch field in the config file.
 binary: catctl-{{ .Os }}-{{ .Arch }}
 
-ldflags:
-  - "-X main.Version={{ .Env.VERSION }}"
+# ldflags:
+#   - "-X main.Version={{ .Env.VERSION }}"
