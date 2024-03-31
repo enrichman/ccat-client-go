@@ -5,6 +5,9 @@ on:
   release:
     types: [created]
 
+permissions:
+  contents: write
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -21,6 +24,8 @@ jobs:
 
     - name: GoReleaser Action
       uses: goreleaser/goreleaser-action@v5.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         version: latest
         args: release --clean
