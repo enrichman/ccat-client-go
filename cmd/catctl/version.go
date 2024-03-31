@@ -11,8 +11,10 @@ var Version = "0.0.0-dev"
 
 func NewVersionCmd(catclient *cat.Client) *cobra.Command {
 	versionCmd := &cobra.Command{
-		Use:   "version",
-		Short: "Show client and Server version",
+		Use:           "version",
+		Short:         "Show client and Server version",
+		SilenceUsage:  true,
+		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			version, err := catclient.Server.Version(cmd.Context())
 			if err != nil {

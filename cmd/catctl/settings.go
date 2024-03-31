@@ -37,8 +37,10 @@ func NewSettingsGetCmd(catclient *cat.Client) *cobra.Command {
 	cfg := &getCfg{}
 
 	settingsGetCmd := &cobra.Command{
-		Use:   "get",
-		Short: "get settings",
+		Use:           "get",
+		Short:         "get settings",
+		SilenceUsage:  true,
+		SilenceErrors: true,
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			existingArgs := mapset.NewSet(args...)
 
@@ -110,9 +112,11 @@ func NewSettingsCreateCmd(catclient *cat.Client) *cobra.Command {
 	cfg := &createCfg{}
 
 	settingsCreateCmd := &cobra.Command{
-		Use:   "create",
-		Short: "create settings",
-		Args:  cobra.MaximumNArgs(1),
+		Use:           "create",
+		Short:         "create settings",
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		Args:          cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			m := map[string]any{}
 

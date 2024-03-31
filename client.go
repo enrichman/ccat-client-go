@@ -15,6 +15,7 @@ type Client struct {
 	APIKey     string
 
 	Settings *SettingsService
+	LLM      *LLMService
 	Server   *ServerService
 	Chat     *ChatService
 }
@@ -34,6 +35,7 @@ func NewClient(opts ...clientOpt) (*Client, error) {
 	}
 
 	c.Settings = &SettingsService{c}
+	c.LLM = &LLMService{c}
 	c.Server = &ServerService{c}
 	c.Chat = &ChatService{c}
 
@@ -47,9 +49,9 @@ func WithHttpClient(httpClient *http.Client) clientOpt {
 	}
 }
 
-func WithBaseURL(baseURL string) clientOpt {
+func WithHostname(host string) clientOpt {
 	return func(c *Client) error {
-		c.BaseURL = baseURL
+		c.BaseURL = host
 		return nil
 	}
 }

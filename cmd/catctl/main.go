@@ -38,6 +38,7 @@ func NewRootCmd() (*cobra.Command, error) {
 
 	type rootCfg struct {
 		apiKey string
+		host   string
 	}
 
 	cfg := &rootCfg{}
@@ -52,6 +53,7 @@ func NewRootCmd() (*cobra.Command, error) {
 
 			newCatclient, err := cat.NewClient(
 				cat.WithAPIKey(cfg.apiKey),
+				cat.WithHostname(cfg.host),
 			)
 			if err != nil {
 				return err
@@ -64,13 +66,20 @@ func NewRootCmd() (*cobra.Command, error) {
 		},
 	}
 
+	llmCmd, err := NewLLMCmd(catclient)
+	if err != nil {
+		return nil, err
+	}
+
 	rootCmd.AddCommand(
 		NewChatCmd(catclient),
+		llmCmd,
 		NewSettingsCmd(catclient),
 		NewVersionCmd(catclient),
 	)
 
 	rootCmd.PersistentFlags().StringVar(&cfg.apiKey, "apikey", "", "The apikey to use with authenticated server")
+	rootCmd.PersistentFlags().StringVar(&cfg.host, "host", "", "The host")
 
 	return rootCmd, nil
 }
