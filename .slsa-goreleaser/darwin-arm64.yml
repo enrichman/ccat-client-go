@@ -10,7 +10,7 @@ flags:
 goos: linux
 goarch: amd64
 
-main: ./cmd/catctl/main.go
+main: ./cmd/catctl/...
 
 # Binary output name.
 # {{ .Os }} will be replaced by goos field in the config file.
