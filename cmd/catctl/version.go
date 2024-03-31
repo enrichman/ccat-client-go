@@ -15,17 +15,18 @@ func NewVersionCmd(catclient *cat.Client) *cobra.Command {
 		Short:         "Show client and Server version",
 		SilenceUsage:  true,
 		SilenceErrors: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: func(cmd *cobra.Command, args []string) {
 			version, err := catclient.Server.Version(cmd.Context())
 			if err != nil {
-				return err
+				// TODO add log for failure
+				fmt.Println("Client Version:", Version)
+				fmt.Println("Server Version: unknown")
+				return
 			}
 
 			fmt.Println("😸", version.Status)
 			fmt.Println("Client Version:", Version)
 			fmt.Println("Server Version:", version.Version)
-
-			return nil
 		},
 	}
 
